@@ -1,1 +1,0 @@
-show_git_revision.py是用来给开发查询目前QA、PP、PRD各环境中各项目发布到哪个git revison了，顺便带上时间，原理就是抓取jenkins对应项目的最后一次发布记录。由于我这边qa、pp、prd不是用一台jenkins发布的，所以脚本中连接了两台jenkins
