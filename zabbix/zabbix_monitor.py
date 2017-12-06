@@ -9,6 +9,8 @@ zabbix_addresses=['http://YourZabbixUrl,YourZabbixUsername,YourZabbixPassword']
 dingding_base_url='https://oapi.dingtalk.com/robot/send?'
 dingding_token='access_token=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 dingding_url=dingding_base_url+dingding_token
+block_key=['HP Drive Array Controller Board','hdfs'] #关键字过滤
+priority_level=-1 #从几级开始告警
 
 
 
@@ -87,9 +89,17 @@ class ZabbixTools:
             content = ''
             if issues:
                 for line in issues:
-		    triggerid=line['triggerid']
-		    host=self.host_get(triggerid)
-                    content = content + "%s:%s\r\n" % (host,line['description'])
+                    triggerid=line['triggerid']
+                    priority=line['priority']
+                    #print(priority)
+                    if (int(priority)<=priority_level):#设置什么级别以上才告警
+                        continue
+                    host=self.host_get(triggerid)
+                    for i in block_key:
+                        if i in line['description']:
+                                break
+                    else:
+                        content = content + "%s:%s\r\n" % (host,line['description'])
             return content
 
     def host_get(self,triggerid):
