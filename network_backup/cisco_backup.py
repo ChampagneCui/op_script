@@ -40,6 +40,6 @@ if __name__=="__main__":
 			ip=y[0]
 			username=y[1]
 			passwd=y[2]
-			cmd=['ls -al']
+			cmd=['show run']
 			a=threading.Thread(target=ssh2,args=(ip,username,passwd,cmd))
 			a.start()
