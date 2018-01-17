@@ -4,4 +4,5 @@
   b.贴上管理服务器的ssh公钥  
   c.关闭selinux  
   d.添加来自于管理服务器的入向策略全允许  
-  e.zabbix agent部署并且自动改完zabbix server地址（需把role下的zabbix-agent拷贝到/etc/ansible/role下）  
+  e.zabbix agent部署并且自动改完zabbix server地址（需把role下的zabbix-agent拷贝到/etc/ansible/role下）  
+用法：ansible-playbook init.yml --extra-vars "host=Your host group"  
