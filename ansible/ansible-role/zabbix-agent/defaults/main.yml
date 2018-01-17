@@ -1,0 +1,9 @@
+---
+zabbix_agent_server: 172..11.1.1
+ServerActive: 172.11.1.1
+zabbix_agent_hostname_prefix: ""
+zabbix_agent_server_port: 10051
+zabbix_agent_metadata: system.uname
+StartAgents: 10
+BufferSend: 60
+Timeout: 30

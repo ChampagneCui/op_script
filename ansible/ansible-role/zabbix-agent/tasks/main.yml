@@ -1,0 +1,21 @@
+---
+  # Add a fast check to speed reconfiguration
+  - stat: path=/usr/sbin/zabbix_agentd
+    register: zabbix_agent_installed
+
+  - include: install.yaml
+    when: not zabbix_agent_installed.stat.exists
+
+  - include: configure.yaml
+
+  - name: Create log directory
+    file: path=/var/log/zabbix state=directory owner=zabbix group=zabbix mode=0775
+
+  - name: Start Zabbix agent service
+    service: name=zabbix-agent state=started enabled=yes
+    ignore_errors: yes
+    register: zabbix_service
+
+  - name: Start Zabbix agent in Centos 7
+    shell: pgrep zabbix_agentd || /usr/sbin/zabbix_agentd
+    when: zabbix_service|failed

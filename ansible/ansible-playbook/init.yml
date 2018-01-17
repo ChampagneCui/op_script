@@ -1,0 +1,39 @@
+- name: init_host
+  hosts: "{{ host }}"
+  sudo: yes
+  vars:
+    change_user: root
+    passwd: $1$8tq1GimH$jXPpWrSc1G3IcuS.mKnM3.
+  tasks:
+    - name: changepasswod 
+      user: name={{ change_user }} password={{ passwd }} update_password=always
+    - name: transfer host publish key
+      authorized_key: user=root key={{ lookup('file', '/root/.ssh/id_rsa.pub') }} path='/root/.ssh/authorized_keys' manage_dir=no
+    - name: Add Some repo centos6
+      yum_repository:
+        name: 163repo
+        description: 163 YUM repo
+        baseurl: http://mirrors.163.com/centos/$releasever/os/$basearch/
+        gpgcheck: no
+    - name: Install python bindings for SE Linux
+      yum: name={{ item }} state=present  
+      with_items:  
+       - libselinux-python  
+       - libsemanage-python  
+    - name: disable selinux
+      selinux: state=disabled
+    - name: iptables centos6
+      iptables:
+        chain: INPUT
+        source: 172.11.1.1
+        jump: ACCEPT
+      when: (ansible_distribution == 'CentOS') and (ansible_distribution_version<'7')
+    - name: iptables centos7
+      firewalld:
+        source: 172.11.1.1
+        zone: internal
+        state: enabled
+      ignore_errors: yes
+      when: (ansible_distribution == 'CentOS') and (ansible_distribution_version>='7')
+  roles:
+       - zabbix-agent
