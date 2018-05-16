@@ -1,6 +1,6 @@
 此脚本可以结合jenkins发布：  
 Project="YourProjectHere"  
-Port="808x" #8080,8081.... 
+Port="808x" #8080,8081....   
 env="dev"  
 old_war="$Project*.war"  
 path=`find ./ -name $old_war`  
