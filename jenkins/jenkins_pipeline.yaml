@@ -1,0 +1,36 @@
+def Project="todo-api"
+def Port="8080"
+def env='dev'
+def old_war="${Project}*.war"
+def new_war
+
+stage('git clone')
+node {
+    git branch: 'master', credentialsId: '8da4577f-4a9a-450c-a042-b6177f1b39ca', url: 'https://github.com/cloudbees/todo-api.git'
+}
+stage 'build'
+node {
+     withEnv(["PATH+MAVEN=${tool 'm3'}/bin"]) {
+          sh "mvn -B clean package"
+     }
+     stash excludes: 'target/', includes: '**', name: 'source'
+}
+stage('change war name')
+node {
+    def path=sh(returnStdout: true, script: "find ./ -name ${old_war}").trim()
+    def md5=sh(returnStdout: true, script: "md5sum ${path}|awk '{print \$1}'").trim()
+    new_war="${Project}-${md5}.war"
+    sh "mv ${path} target/${new_war}"
+    sh "ls"
+}
+stage('ansible copy') 
+node {
+    sh "ansible ${env}-${Project} -m copy -a \"src=target/${new_war} dest=/opt/deploy/install/\""
+}
+stage 'approve'
+timeout(time: 1, unit: 'DAYS') {
+     input message: 'Do you want to deploy?', submitter: 'cuixb'
+}
+stage name:'deploy', concurrency: 1
+node {
+    sh "ansible ${env}-${Project} -m copy -a \"src=target/${new_war} dest=/opt/deploy/install/\""
