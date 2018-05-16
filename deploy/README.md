@@ -1,7 +1,7 @@
 此脚本可以结合jenkins发布：  
 Project="YourProjectHere"  
 Port="808x" #8080,8081.... 
-env="dev"
+env="dev"  
 old_war="$Project*.war"  
 path=`find ./ -name $old_war`  
 md5=`md5sum $path|awk '{print $1}'`  
