@@ -13,7 +13,7 @@ from datetime import date, timedelta, datetime
 
 day = 1
 brand_cmd = {'cisco': ['terminal length 0', 'show running-config'], 'fortinet': ['show full-configuration'],
-             'huawei': ['screen-length 0 temporary', 'display current-configuration'], 'linux': ['ls', 'ps -ef']}
+             'huawei': ['screen-length 0 temporary', 'display current-configuration']}
 
 file_path = './iplist.txt'
 config = configparser.ConfigParser()
@@ -97,8 +97,7 @@ if __name__ == "__main__":
 			en_pwd = ''
 
 		if protocol == 'ssh2':
-			# job = threading.Thread(target=ssh2, args=(ip,username,passwd, hostname, port,cmd_list,enable, en_pwd))
-			pass
+			job = threading.Thread(target=ssh2, args=(ip,username,passwd, hostname, port,cmd_list,enable, en_pwd))
 		else:
 			job = threading.Thread(target=telnet, args=(ip, username, passwd, hostname, port, cmd_list,enable, en_pwd))
 			job.start()
