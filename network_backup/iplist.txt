@@ -1,1 +1,25 @@
-1.1.1.1 root password
+[DEFAULT]
+port=22
+protocol=ssh2
+user=root
+password=password
+
+[cisco1]
+name=cisco1
+brand=cisco
+ip=10.100.1.1.1
+user=backup
+password=xxxxx
+enable=yes
+en_pwd=xxxxxx
+
+[cisco2]
+name=cisco2
+brand=cisco
+ip=10.100.1.2
+protocol=telnet
+port=23
+user=backup
+password=xxxxxxx
+enable=yes
+en_pwd=xxxxxxxx
