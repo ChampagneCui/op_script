@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-# 标准的zabbix监控报警
+# 标准的zabbix监控报警,这种是主动去zabbix_api里取的
 import json
 import urllib2
 from urllib2 import URLError
